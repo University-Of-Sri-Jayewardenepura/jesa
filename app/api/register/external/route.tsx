@@ -46,10 +46,10 @@ export async function POST(request: Request) {
 
         await connectMongoDB();
 
-         const duplicateCheck = await ExternalApplicant.find({NIC:body.NIC})
+         const duplicateCheck = await ExternalApplicant.find({Email:body.Email})
 
          if (duplicateCheck.length > 0) {
-            return new NextResponse(JSON.stringify({ message: "Hmm... Please Check NIC Number" }), { status: 409 });
+            return new NextResponse(JSON.stringify({ message: "Hmm... Please Check Email Address" }), { status: 409 });
         }
 
         // Create BaseApplicant
