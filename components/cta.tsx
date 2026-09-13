@@ -2,8 +2,6 @@
 
 import type React from "react";
 
-import { CtaButton } from "@/components/ui/cta-button";
-
 const CTA: React.FC = () => {
 	return (
 		<section className="cta relative px-safe pt-[124px] pb-[120px] md:pt-[142px] md:pb-[136px] lg:pt-[232px] lg:pb-[160px] xl:pt-[180px] xl:pb-[162px]">

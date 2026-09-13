@@ -1,136 +1,79 @@
 <p align="center">
-  <a href="http://careerskills.sjp.ac.lk/">
-    <picture>
-      <source media="(prefers-color-scheme: dark)">
-      <img src="./public/images/jesa-logo.png" height="128">
-    </picture>
-    <h1 align="center">JESA 2025</h1>
+  <a href="https://jesa.lk">
+    <img src="./public/images/jesa-logo.png" height="128" alt="JESA logo">
   </a>
 </p>
 
-JESA (J'pura Employability Skills Awards), the ultimate platform for honoring the accomplishments of young talents. With 17 prestigious awards exclusively dedicated to undergraduates of the University of Sri Jayewardenepura, and a new special award open to students from other universities, JESA sets a remarkable standard for recognition.
+# JESA
 
-Organized by the Career Skills Development Society of the University, this highly regarded award ceremony, initiated in 2015, continues to captivate audiences. Join us this year to witness the expansion of the JESA legacy, as talented undergraduates from diverse institutions compete for the coveted Best Innovator Award.
+JESA (J'pura Employability Skills Awards) celebrates undergraduate achievement at
+the University of Sri Jayewardenepura. The Career Skills Development Society
+organizes the awards, with selected categories also open to other state universities.
 
-## Contributing
+This repository contains the public awards website, the 2026 application form,
+and the administration interface. Visit [jesa.lk](https://jesa.lk).
 
-Prerequisites :
+## Development
 
-- Install [Git](https://www.git-scm.com/downloads).
-- Install [Bun](https://bun.sh/).
+Use Node 24 and Bun 1.3.10, as recorded in `.nvmrc` and `package.json`.
 
-Install Bun:
-
-_Linux & macOS_
-
-`$ curl -fsSL https://bun.sh/install | bash`
-
-_Windows_
-
-`> powershell -c "irm bun.sh/install.ps1 | iex"`
-
-We recomment using Bun for faster development and runtime
-
-- `git clone https://github.com/University-Of-Sri-Jayewardenepura/jesa`
-- `cd jesa`
-- `bun install` 
-- `bun run dev`
-
-App Structure
-
-```
-├── app
-│   ├── api
-│   │   ├── register
-│   │   |   ├── ...
-│   ├── awards
-│   │   ├── page.tsx
-│   │   └── awards-card.tsx
-│   ├── hall-of-fame
-│   │   ├── page.tsx
-│   │   └── hall-of-fame.tsx
-│   ├── register
-│   │   ├── page.tsx
-│   │   ├── ...
-│   ├── terms
-│   │   ├── page.tsx
-│   ├── layout.tsx
-│   ├── not-found.tsx
-│   └── page.tsx
-│   └── error.tsx
-│   └── sitemap.ts
-├── components
-│   ├── ui
-│   │   ├── button.tsx
-│   │   └── ...
-│   ├── core
-│   └── ├── ...
-│   ├── nav.tsx
-│   └── ...
-├── constants
-│   └── awards.ts
-│   └── form.ts
-│   └── ...
-├── data
-│   └── data.ts
-│   └── ...
-├── models
-│   └── RegTable.ts
-│   └── ...
-├── public
-│   └── images
-├── lib
-│   └── utils.ts
-│   └── mongodb.ts
-├── bun.lockb
-├── .env.example
-├── components.json
-├── LICENSE.md
-├── next.config.js
-├── package.json
-├── postcss.config.js
-├── README.md
-└── tsconfig.json
+```sh
+git clone https://github.com/University-Of-Sri-Jayewardenepura/JESA.git
+cd JESA
+bun install --frozen-lockfile
+cp .env.example .env.local
+bun run dev
 ```
 
-## Built with:
+Open [localhost:3000](http://localhost:3000). Obtain development credentials from a
+maintainer for backend features and keep environment files private. Bun is the
+package manager; commit `bun.lock` rather than a second lockfile.
 
-### JavaScript frameworks:
+## Commands
 
-- <a href="https://react.dev/">React</a>
-- <a href="https://nextjs.org/">Next.js 15</a>
+| Command | Purpose |
+| --- | --- |
+| `bun run dev` | Start Next.js with Turbopack |
+| `bun run build` | Create and type-check a production build |
+| `bun run start` | Serve the production build |
+| `bun run lint` / `bun run check` | Run the installed Biome checks |
+| `bun run fix <path>` | Apply Biome fixes to selected files |
+| `bun run typecheck` | Check TypeScript without emitting files |
+| `bun run test:unit` | Run colocated Bun unit tests |
+| `bun run knip` | Identify unused files, exports, and packages |
+| `bun run test:e2e` | Run Playwright tests using an isolated test backend |
 
-### UI frameworks :
+Some browser tests submit applications. See [CONTRIBUTING.md](CONTRIBUTING.md)
+before running them or any legacy data command.
 
-- <a href="https://www.radix-ui.com/">Radix UI</a>
-- <a href="https://ui.shadcn.com/">shadcn UI</a>
-- <a href="https://tailwindcss.com/">Tailwind CSS</a>
+## Repository guide
 
-### Animations
+- [CONTRIBUTING.md](CONTRIBUTING.md): setup, checks, dependency updates, and pull requests.
+- [DESIGN.md](DESIGN.md): route structure, data boundaries, and visual conventions.
+- [AGENTS.md](AGENTS.md): working instructions for coding agents.
+- [JESA maintenance skill](.agents/skills/jesa-maintenance/SKILL.md): dependency and dead-code review.
 
-- <a href="[https://motion.dev/">Motion</a>
+Public routes live in `app/(site)/`, admin pages in `app/(admin)/`, shared UI in
+`components/`, and maintained content in `constants/`. The current application and
+admin flows use the existing Firebase integration. Legacy registration and lookup
+routes still use MongoDB, so Mongoose and its sequence plugin remain required.
 
-### Icons
+The `/register` landing page currently announces registration closure; the 2026
+form remains at `/register/2026`. General maintenance preserves that behavior.
 
-- <a href="https://lucide.dev/icons/">Lucide</a>
+## Stack
 
-### Analytics
+[Next.js](https://nextjs.org/) and [React](https://react.dev/),
+[TypeScript](https://www.typescriptlang.org/),
+[Tailwind CSS](https://tailwindcss.com/),
+[Radix UI](https://www.radix-ui.com/) / [shadcn/ui](https://ui.shadcn.com/),
+[Motion](https://motion.dev/), [Lucide](https://lucide.dev/), and
+[Zod](https://zod.dev/). See `package.json` and `bun.lock` for exact versions.
 
-- <a href="https://clarity.microsoft.com/">Microsoft Clarity</a>
+Quality tooling uses [Biome](https://biomejs.dev/), [Knip](https://knip.dev/),
+Bun tests, and [Playwright](https://playwright.dev/).
 
-### Data Validation
+## Credits and license
 
-- <a href="https://zod.dev/">Zod</a>
-
-### Database & Object Modeling
-
-- <a href="https://www.mongodb.com/">MongoDB</a>
-- <a href="https://mongoosejs.com/">mongoose</a>
-
-### Deployment
-
-- <a href="https://vercel.com">Vercel</a>
-
-## Authors
-
-- [Pruthivi Thejan](https://links.pruthivithejan.me)
+Created by [Pruthivi Thejan](https://links.pruthivithejan.me) and maintained by
+the JESA community. See [LICENSE.md](LICENSE.md).
