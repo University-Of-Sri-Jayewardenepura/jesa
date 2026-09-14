@@ -1,13 +1,7 @@
 "use client";
 
+import { CheckCircle2, FileJson, Loader2, Upload, XCircle } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
-import {
-	CheckCircle2,
-	FileJson,
-	Loader2,
-	Upload,
-	XCircle,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -15,13 +9,12 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import {
-	validateBulkImportJson,
-	type BulkImportItem,
-	type BulkImportResult,
-	type BulkImportResultItem,
-} from "./service/bulk-import-types";
 import { processBulkImport } from "./service/bulk-import-service";
+import {
+	type BulkImportResult,
+	resolveAwardCodeFromFaculty,
+	validateBulkImportJson,
+} from "./service/bulk-import-types";
 
 type BulkImportDialogProps = {
 	open: boolean;
@@ -106,19 +99,7 @@ export default function BulkImportDialog({
 					const awardKeys = item.awardSelection?.selectedAwards || [];
 					let awardCode = awardKeys[0] || "";
 					if (!awardCode && faculty) {
-						const map: Record<string, string> = {
-							FHSS: "besa-fhss",
-							FAS: "besa-fas",
-							FMSC: "besa-fmsc",
-							FMS: "besa-fms",
-							FOT: "besa-fot",
-							FOE: "besa-foe",
-							FAHS: "besa-fahs",
-							FUAB: "besa-fuab",
-							FDS: "besa-fds",
-							FOC: "besa-foc",
-						};
-						awardCode = map[faculty] || "";
+						awardCode = resolveAwardCodeFromFaculty(faculty) || "";
 					}
 					return {
 						applicationId: item.applicationId,
@@ -164,9 +145,13 @@ export default function BulkImportDialog({
 		}
 	}
 
-	const created = result?.results.filter((r) => r.status === "created").length || 0;
+	const created =
+		result?.results.filter((r) => r.status === "created").length || 0;
 	const sent = result?.results.filter((r) => r.status === "sent").length || 0;
-	const failed = result?.results.filter((r) => r.status === "failed" || r.status === "send_failed").length || 0;
+	const failed =
+		result?.results.filter(
+			(r) => r.status === "failed" || r.status === "send_failed",
+		).length || 0;
 
 	return (
 		<Dialog open={open} onOpenChange={handleClose}>
@@ -181,26 +166,21 @@ export default function BulkImportDialog({
 				{/* Step: Upload */}
 				{step === "upload" && (
 					<div className="px-6 py-8">
-						<div
+						<button
 							className="flex flex-col items-center gap-4 rounded-xl border-2 border-dashed border-border/60 bg-muted/10 py-10 transition-colors hover:border-amber-500/30 hover:bg-amber-500/5"
 							onClick={() => fileInputRef.current?.click()}
-							onKeyDown={(e) => {
-								if (e.key === "Enter" || e.key === " ")
-									fileInputRef.current?.click();
-							}}
-							role="button"
-							tabIndex={0}
+							type="button"
 						>
 							<Upload className="size-8 text-muted-foreground/50" />
-							<div className="text-center">
-								<p className="font-medium text-foreground text-sm">
+							<span className="text-center">
+								<span className="block font-medium text-foreground text-sm">
 									Click to upload JSON file
-								</p>
-								<p className="mt-1 text-muted-foreground text-xs">
+								</span>
+								<span className="mt-1 block text-muted-foreground text-xs">
 									Accepted format: .json
-								</p>
-							</div>
-						</div>
+								</span>
+							</span>
+						</button>
 						<input
 							accept=".json"
 							className="hidden"
@@ -219,8 +199,8 @@ export default function BulkImportDialog({
 					<div className="flex flex-col">
 						<div className="flex items-center justify-between border-border border-b px-6 py-3">
 							<p className="text-foreground text-sm font-medium">
-								{parsedItems.length} application{parsedItems.length !== 1 ? "s" : ""}{" "}
-								ready to import
+								{parsedItems.length} application
+								{parsedItems.length !== 1 ? "s" : ""} ready to import
 							</p>
 							<label className="flex items-center gap-2 text-xs">
 								<input
@@ -245,9 +225,7 @@ export default function BulkImportDialog({
 								<tbody className="divide-y divide-border/50">
 									{parsedItems.map((item, i) => (
 										<tr key={item.applicationId || i}>
-											<td className="px-2 py-2 text-foreground">
-												{item.name}
-											</td>
+											<td className="px-2 py-2 text-foreground">{item.name}</td>
 											<td className="px-2 py-2 text-muted-foreground">
 												{item.email}
 											</td>
@@ -324,7 +302,8 @@ export default function BulkImportDialog({
 										className="flex items-center gap-2 rounded-lg bg-muted/20 px-3 py-2 text-xs"
 										key={item.applicationId}
 									>
-										{item.status === "failed" || item.status === "send_failed" ? (
+										{item.status === "failed" ||
+										item.status === "send_failed" ? (
 											<XCircle className="size-3.5 shrink-0 text-red-400" />
 										) : (
 											<CheckCircle2 className="size-3.5 shrink-0 text-emerald-400" />

@@ -1,0 +1,7 @@
+[install]
+# Install explicitly from the reviewed lockfile; never fetch missing imports at runtime.
+auto = "disable"
+exact = true
+saveTextLockfile = true
+# Give new releases three days for ecosystem feedback before resolving them.
+minimumReleaseAge = 259200

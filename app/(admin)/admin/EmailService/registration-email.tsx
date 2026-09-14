@@ -20,7 +20,6 @@ function escapeHtml(value: string) {
 		.replaceAll("'", "&#039;");
 }
 
-
 /** Builds a registration email with one number and WhatsApp link per award. */
 export default function RegistrationEmail({
 	recipientName,

@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, XCircle, Loader2, Mail, Send } from "lucide-react";
+import { CheckCircle2, Loader2, Mail, Send, XCircle } from "lucide-react";
 import {
 	Dialog,
 	DialogContent,
@@ -51,7 +51,11 @@ function StatusLabel({ status }: { status: SendResultItem["status"] }) {
 		accepted: "Sent",
 		failed: "Failed",
 	};
-	return <span className={`text-xs font-medium ${styles[status]}`}>{labels[status]}</span>;
+	return (
+		<span className={`text-xs font-medium ${styles[status]}`}>
+			{labels[status]}
+		</span>
+	);
 }
 
 export default function SendProgressDialog({
@@ -64,7 +68,9 @@ export default function SendProgressDialog({
 	const total = results.length;
 	const sent = results.filter((r) => r.status === "accepted").length;
 	const failed = results.filter((r) => r.status === "failed").length;
-	const pending = results.filter((r) => r.status === "pending" || r.status === "sending").length;
+	const pending = results.filter(
+		(r) => r.status === "pending" || r.status === "sending",
+	).length;
 	const progress = total > 0 ? ((sent + failed) / total) * 100 : 0;
 
 	return (

@@ -78,7 +78,8 @@ function buildMessageRecord(
 				) {
 					return [];
 				}
-				const awardCode = typeof value.awardCode === "string" ? value.awardCode : "";
+				const awardCode =
+					typeof value.awardCode === "string" ? value.awardCode : "";
 				const whatsappEntry = WHATSAPP_LINKS[awardCode];
 				return [
 					{

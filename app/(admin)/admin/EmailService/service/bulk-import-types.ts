@@ -1,26 +1,5 @@
 import type { AwardType } from "@/lib/awards";
 
-const AWARD_PREFIXES: Record<AwardType, string> = {
-	"best-leader": "BL",
-	"best-team-player": "BTP",
-	"best-creative-designer": "BCD",
-	"best-communicator": "BCOM",
-	"best-innovator": "BI",
-	"best-young-entrepreneur": "BYE",
-	"best-csr": "CSR",
-	"besa-inter-university": "IU",
-	"besa-fhss": "FHSS",
-	"besa-fas": "FAS",
-	"besa-fmsc": "FMSC",
-	"besa-fms": "FMS",
-	"besa-fot": "FOT",
-	"besa-foe": "FOE",
-	"besa-fahs": "FAHS",
-	"besa-fuab": "FUAB",
-	"besa-fds": "FDS",
-	"besa-foc": "FOC",
-};
-
 export type BulkImportItem = {
 	id: string;
 	applicationId: string;
@@ -65,9 +44,11 @@ export type BulkImportResult = {
 };
 
 /** Validates the JSON structure of a bulk import item. */
-export function validateBulkImportJson(
-	data: unknown,
-): { valid: boolean; items: BulkImportItem[]; error?: string } {
+export function validateBulkImportJson(data: unknown): {
+	valid: boolean;
+	items: BulkImportItem[];
+	error?: string;
+} {
 	if (!Array.isArray(data)) {
 		return { valid: false, items: [], error: "JSON must be an array." };
 	}
@@ -85,7 +66,9 @@ export function validateBulkImportJson(
 			};
 		}
 		const obj = entry as Record<string, unknown>;
-		const personalInfo = obj.personalInfo as Record<string, unknown> | undefined;
+		const personalInfo = obj.personalInfo as
+			| Record<string, unknown>
+			| undefined;
 		if (!personalInfo?.email || !personalInfo?.publicDisplayName) {
 			return {
 				valid: false,
@@ -97,7 +80,8 @@ export function validateBulkImportJson(
 			id: (obj.id as string) || (obj.applicationId as string) || `import-${i}`,
 			applicationId:
 				(obj.applicationId as string) || (obj.id as string) || `import-${i}`,
-			applicantType: (obj.applicantType as "internal" | "external") || "internal",
+			applicantType:
+				(obj.applicantType as "internal" | "external") || "internal",
 			personalInfo: {
 				publicDisplayName: personalInfo.publicDisplayName as string,
 				email: personalInfo.email as string,
@@ -107,14 +91,18 @@ export function validateBulkImportJson(
 				mobileNumber: personalInfo.mobileNumber as string | undefined,
 			},
 			academicInfo: {
-				university: (obj.academicInfo as Record<string, unknown>)
-					?.university as string | undefined,
-				universityRegistrationNumber: (obj.academicInfo as Record<string, unknown>)
-					?.universityRegistrationNumber as string | undefined,
-				faculty: (obj.academicInfo as Record<string, unknown>)
-					?.faculty as string | undefined,
-				degree: (obj.academicInfo as Record<string, unknown>)
-					?.degree as string | undefined,
+				university: (obj.academicInfo as Record<string, unknown>)?.university as
+					| string
+					| undefined,
+				universityRegistrationNumber: (
+					obj.academicInfo as Record<string, unknown>
+				)?.universityRegistrationNumber as string | undefined,
+				faculty: (obj.academicInfo as Record<string, unknown>)?.faculty as
+					| string
+					| undefined,
+				degree: (obj.academicInfo as Record<string, unknown>)?.degree as
+					| string
+					| undefined,
 			},
 			awardSelection: obj.awardSelection as BulkImportItem["awardSelection"],
 		});
@@ -123,9 +111,7 @@ export function validateBulkImportJson(
 }
 
 /** Resolves the award code from faculty string. */
-export function resolveAwardCodeFromFaculty(
-	faculty: string,
-): AwardType | null {
+export function resolveAwardCodeFromFaculty(faculty: string): AwardType | null {
 	const upper = faculty.toUpperCase();
 	const map: Record<string, AwardType> = {
 		FHSS: "besa-fhss",

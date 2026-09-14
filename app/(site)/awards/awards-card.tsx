@@ -1,9 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
-import dynamic from "next/dynamic";
 import { awards } from "@/constants/awards";
 
 const TextAnimate = dynamic(

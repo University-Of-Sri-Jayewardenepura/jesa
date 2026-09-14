@@ -50,3 +50,11 @@ data/contacts
 
 test-results/
 playwright-debug.log
+
+# Local source documents, scratch scripts, and generated reports
+/scratch/
+/tmp/
+/*.docx
+/playwright-report/
+/blob-report/
+/package-lock.json

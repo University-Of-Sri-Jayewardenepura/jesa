@@ -70,7 +70,14 @@ export async function claimMessageForSending(
 		const emailDispatch = (data.emailDispatch ??
 			{}) as FirebaseFirestore.DocumentData;
 		const currentStatus = readString(emailDispatch.status) || "not_sent";
-		const sendableStatuses = new Set(["not_sent", "failed", "accepted", "delivered", "bounced", "complained"]);
+		const sendableStatuses = new Set([
+			"not_sent",
+			"failed",
+			"accepted",
+			"delivered",
+			"bounced",
+			"complained",
+		]);
 		if (!sendableStatuses.has(currentStatus)) {
 			return {
 				claimed: false,

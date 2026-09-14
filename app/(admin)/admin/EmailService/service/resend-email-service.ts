@@ -31,7 +31,7 @@ export async function sendClaimedRegistrationEmail(
 			"Idempotency-Key": `registration-${message.applicationId}-${message.attempt}`,
 		},
 		body: JSON.stringify({
-			from:"JESA 2026 <noreply@jesa.lk>",
+			from: "JESA 2026 <noreply@jesa.lk>",
 			// from:
 			// 	process.env.RESEND_FROM_EMAIL ??
 			// 	"JESA 2026 <noreply@jesa.lk>",

@@ -1,6 +1,6 @@
 "use client";
 
-import { Monitor, Smartphone, X } from "lucide-react";
+import { Monitor, Smartphone } from "lucide-react";
 import { useState } from "react";
 import {
 	Dialog,
@@ -96,7 +96,10 @@ export default function EmailPreviewDialog({
 					</div>
 				</DialogHeader>
 
-				<div className="flex justify-center overflow-auto p-4 sm:p-6" style={{ backgroundColor: "#1c1029" }}>
+				<div
+					className="flex justify-center overflow-auto p-4 sm:p-6"
+					style={{ backgroundColor: "#1c1029" }}
+				>
 					<div
 						className="overflow-hidden rounded-lg border border-slate-800 shadow-2xl transition-all duration-300"
 						style={{
@@ -127,7 +130,8 @@ export default function EmailPreviewDialog({
 				<div className="flex items-center justify-between border-border border-t bg-muted/30 px-6 py-3">
 					<div className="flex items-center gap-4 text-muted-foreground text-xs">
 						<span>
-							To: <span className="text-foreground">{record.recipient.email}</span>
+							To:{" "}
+							<span className="text-foreground">{record.recipient.email}</span>
 						</span>
 						<span>
 							Awards: <span className="text-foreground">{awards.length}</span>

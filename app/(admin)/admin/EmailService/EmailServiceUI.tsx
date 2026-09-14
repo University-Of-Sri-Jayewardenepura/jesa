@@ -24,10 +24,10 @@ import {
 import { useDeferredValue, useEffect, useState, useTransition } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import EmailPreviewDialog from "./email-preview-dialog";
-import SendProgressDialog from "./send-progress-dialog";
-import type { SendResultItem } from "./send-progress-dialog";
 import BulkImportDialog from "./bulk-import-dialog";
+import EmailPreviewDialog from "./email-preview-dialog";
+import type { SendResultItem } from "./send-progress-dialog";
+import SendProgressDialog from "./send-progress-dialog";
 import { getMessageRecords } from "./service/message-retrieval-service";
 import { registerApplications } from "./service/register-applications";
 import { getRegistrationLookup } from "./service/registration-service";
@@ -90,7 +90,13 @@ function canSendMessage(status: MessageDispatchStatus) {
 
 /** Checks if a message status indicates it needs resending (failed, bounced, complained, accepted, or delivered). */
 function needsResend(status: MessageDispatchStatus) {
-	return status === "failed" || status === "bounced" || status === "complained" || status === "accepted" || status === "delivered";
+	return (
+		status === "failed" ||
+		status === "bounced" ||
+		status === "complained" ||
+		status === "accepted" ||
+		status === "delivered"
+	);
 }
 
 /** Formats a serialized Firestore date for the message table. */
@@ -166,7 +172,9 @@ function RegistrationLookupTab({
 		useState<RegistrationBatchResult | null>(null);
 	const [registrationActionError, setRegistrationActionError] = useState("");
 	const [isRegistering, startRegistrationTransition] = useTransition();
-	const [registerProgressResults, setRegisterProgressResults] = useState<SendResultItem[]>([]);
+	const [registerProgressResults, setRegisterProgressResults] = useState<
+		SendResultItem[]
+	>([]);
 	const [isRegisterProgressOpen, setIsRegisterProgressOpen] = useState(false);
 	const deferredSearch = useDeferredValue(search.trim().toLocaleLowerCase());
 	const filteredRecords = records
@@ -237,14 +245,11 @@ function RegistrationLookupTab({
 				const found = filteredRecords.find((r) => r.applicationId === id);
 				return found;
 			})
-			.filter(
-				(r): r is (typeof filteredRecords)[number] => !!r,
-			);
+			.filter((r): r is (typeof filteredRecords)[number] => !!r);
 
 		const initialResults: SendResultItem[] = records.map((r) => ({
 			applicationId: r.applicationId,
-			registrationNumber:
-				r.applicationReferenceNumber ?? r.recipient.name,
+			registrationNumber: r.applicationReferenceNumber ?? r.recipient.name,
 			recipientName: r.recipient.name,
 			recipientEmail: r.recipient.email,
 			status: "pending" as const,
@@ -662,9 +667,13 @@ export default function EmailServiceUI() {
 	const [messageSearch, setMessageSearch] = useState("");
 	const [selectedMessageIds, setSelectedMessageIds] = useState<string[]>([]);
 	const [isSendingMessages, startMessageTransition] = useTransition();
-	const [previewRecord, setPreviewRecord] = useState<MessageRecord | null>(null);
+	const [previewRecord, setPreviewRecord] = useState<MessageRecord | null>(
+		null,
+	);
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-	const [sendProgressResults, setSendProgressResults] = useState<SendResultItem[]>([]);
+	const [sendProgressResults, setSendProgressResults] = useState<
+		SendResultItem[]
+	>([]);
 	const [isSendProgressOpen, setIsSendProgressOpen] = useState(false);
 	const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
 	const deferredMessageSearch = useDeferredValue(
@@ -716,7 +725,7 @@ export default function EmailServiceUI() {
 				.length,
 			detail: "Registration emails",
 			icon: MailPlus,
-							accent: "text-slate-100 bg-slate-800/50 border-slate-700/50",
+			accent: "text-slate-100 bg-slate-800/50 border-slate-700/50",
 		},
 		{
 			label: "In progress",
@@ -955,8 +964,8 @@ export default function EmailServiceUI() {
 							Email Service
 						</h1>
 						<p className="mt-3 max-w-2xl text-muted-foreground text-sm leading-6 sm:text-base">
-							Review and prepare registration emails for JESA 2026
-							applicants from one organized workspace.
+							Review and prepare registration emails for JESA 2026 applicants
+							from one organized workspace.
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-2">
@@ -1001,8 +1010,8 @@ export default function EmailServiceUI() {
 						}
 						className={`flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 font-medium text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
 							activeWorkspace === "message-sending"
-							? "bg-slate-100 text-slate-900 shadow-sm"
-							: "text-muted-foreground hover:bg-muted/30 hover:text-foreground"
+								? "bg-slate-100 text-slate-900 shadow-sm"
+								: "text-muted-foreground hover:bg-muted/30 hover:text-foreground"
 						}`}
 						onClick={() => setActiveWorkspace("message-sending")}
 						type="button"
@@ -1181,7 +1190,9 @@ export default function EmailServiceUI() {
 									</button>
 								))}
 								<div className="ml-auto flex items-center">
-									{filteredMessageRecords.some((r) => needsResend(r.status)) && (
+									{filteredMessageRecords.some((r) =>
+										needsResend(r.status),
+									) && (
 										<Button
 											className="border-amber-500/30 bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300"
 											disabled={isSendingMessages}
@@ -1232,7 +1243,7 @@ export default function EmailServiceUI() {
 
 							{messageLoading ? (
 								<div className="p-10 text-center">
-		<Loader2 className="mx-auto size-6 animate-spin text-slate-300" />
+									<Loader2 className="mx-auto size-6 animate-spin text-slate-300" />
 									<p className="mt-3 text-muted-foreground text-sm">
 										Loading message records...
 									</p>
@@ -1328,7 +1339,9 @@ export default function EmailServiceUI() {
 														<td className="max-w-60 px-4 py-4 text-muted-foreground">
 															<span
 																className="block truncate"
-																title={record.awards.map((a) => a.label).join(", ")}
+																title={record.awards
+																	.map((a) => a.label)
+																	.join(", ")}
 															>
 																{record.awards[0]?.label ?? "No active awards"}
 																{record.awards.length > 1
@@ -1353,7 +1366,9 @@ export default function EmailServiceUI() {
 																		className="text-amber-400 hover:text-amber-300 hover:bg-amber-500/10"
 																		disabled={isSendingMessages}
 																		onClick={() =>
-																			sendSelectedMessages([record.applicationId])
+																			sendSelectedMessages([
+																				record.applicationId,
+																			])
 																		}
 																		size="icon"
 																		type="button"
@@ -1488,12 +1503,11 @@ export default function EmailServiceUI() {
 						</section>
 
 						{/* Static informational footer: actions are intentionally UI-only. */}
-							<div className="flex flex-col gap-3 rounded-xl border border-slate-700/50 bg-slate-800/40 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex flex-col gap-3 rounded-xl border border-slate-700/50 bg-slate-800/40 px-4 py-3 text-xs sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex items-center gap-2 text-muted-foreground">
 								<MailCheck className="size-4 text-slate-100" />
 								<span>
-									Email delivery is configured for JESA 2026
-									registrations.
+									Email delivery is configured for JESA 2026 registrations.
 								</span>
 							</div>
 							<button
