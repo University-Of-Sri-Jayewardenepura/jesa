@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# JESA
+# JESA 2026
 
 JESA (J'pura Employability Skills Awards) celebrates undergraduate achievement at
 the University of Sri Jayewardenepura. The Career Skills Development Society
