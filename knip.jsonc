@@ -11,12 +11,24 @@
 	],
 	// Locally consumed exports still implement live behavior (including Firebase helpers).
 	"ignoreExportsUsedInFile": true,
+	"ignoreDependencies": [
+		"@radix-ui/react-tooltip",
+		"react-hot-toast"
+	],
 	"ignoreIssues": {
+		// Archived registration and presentation code is retained for future events.
+		"app/(site)/register/external/external-register-form.tsx": ["files"],
+		"app/(site)/register/internal/internal-register-form.tsx": ["files"],
+		"components/{annoucement,countdown-timer,sponsors}.tsx": ["files"],
+		"components/ui/{title,tooltip}.tsx": ["files", "exports"],
+		"constants/sponsors.ts": ["files"],
 		// Preserve the shared shadcn primitive APIs, even when only part is consumed.
-		"components/ui/{button,dialog,form,input}.tsx": ["exports", "types"],
+		"components/ui/{button,dialog,form,input,select}.tsx": ["exports", "types"],
 		// These values are consumed dynamically through Object.values/getEnumValues.
-		"constants/form.ts": ["enumMembers"],
+		"constants/form.ts": ["enumMembers", "types"],
 		// Firebase audit/auth helpers are intentionally outside maintenance cleanup.
-		"app/admin/lib/{audit,server-auth}.ts": ["exports"]
+		"app/admin/lib/{audit,server-auth}.ts": ["exports"],
+		"app/(site)/awards/awards-card.tsx": ["exports", "duplicates"],
+		"lib/awards.ts": ["exports"]
 	}
 }

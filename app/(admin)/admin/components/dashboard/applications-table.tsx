@@ -175,10 +175,7 @@ export default function ApplicationsTable({
 											<Select
 												value={app.status || "submitted"}
 												onValueChange={(val) =>
-													onStatusChange(
-														app.id,
-														val as ApplicationStatus,
-													)
+													onStatusChange(app.id, val as ApplicationStatus)
 												}
 											>
 												<SelectTrigger className="h-8 min-w-[110px] border border-slate-600 bg-slate-800/50 text-xs text-slate-300 hover:bg-slate-800">
@@ -186,7 +183,9 @@ export default function ApplicationsTable({
 												</SelectTrigger>
 												<SelectContent>
 													<SelectItem value="submitted">Submitted</SelectItem>
-													<SelectItem value="shortlisted">Shortlisted</SelectItem>
+													<SelectItem value="shortlisted">
+														Shortlisted
+													</SelectItem>
 													<SelectItem value="approved">Approved</SelectItem>
 													<SelectItem value="rejected">Rejected</SelectItem>
 												</SelectContent>
